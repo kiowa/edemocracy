@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Google Maps JavaScript API Example</title>
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAv9Jsr8TH7LFBOSj1v1V8JRSBRTQwiR-Of-8Zvc3gNdGuv4orZBQb7ncH-qhRGluuLnrlBgATo1dt1A"
+      type="text/javascript"></script>
+    <script type="text/javascript">
+
+    //<![CDATA[
+	var map;
+	var geocoder;
+	var cases = new Array();
+
+    function load() {
+      if (GBrowserIsCompatible()) {
+        map = new GMap2(document.getElementById("map"));
+		geocoder = new GClientGeocoder();
+		map.addControl(new GSmallMapControl());
+		map.addControl(new GMapTypeControl());
+
+        map.setCenter(new GLatLng(59.932828, 10.782437), 15);
+		
+		
+		for (i = 0; 10
+			 > i; i++) {showAddress(cases[i])} 
+		
+		}
+    }
+
+	function showAddress(address) {
+		geocoder.getLatLng(
+			address,
+			function(point) {
+				if (!point) {
+					alert(address);
+				} else {
+					//map.setCenter(point, 15);
+					var marker = new GMarker(point);
+					map.addOverlay(marker);
+					//marker.openInfoWindowHtml(address);
+				}
+			}			
+		);
+	}
+	
+	{% for case in cases %}
+	 	cases.push("{{ case.address }}, oslo, norway");
+	{% endfor %}
+
+    //]]>
+    </script>
+  </head>
+  <body onload="load()" onunload="GUnload()">
+    <div id="map" style="width: 500px; height: 300px"></div>
+
+	<ul>
+		{% for case in cases %}
+			<li>{{ case.caseno }} {{ case.address }}</li>
+		{% endfor %}
+	</ul>
+			
+
+  </body>
+</html>
